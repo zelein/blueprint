@@ -14,7 +14,7 @@ import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 
 export interface IHotkeysTargetComponent extends React.Component {
     /** Components decorated with the `@HotkeysTarget` decorator must implement React's component `render` function. */
-    render(): React.ReactElement<any> | null | undefined;
+    render(): JSX.Element | null | undefined;
 
     /**
      * Components decorated with the `@HotkeysTarget` decorator must implement
@@ -74,7 +74,7 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
                 return element;
             }
 
-            if (!React.isValidElement<any>(element)) {
+            if (!React.isValidElement<React.HTMLAttributes<HTMLElement>>(element)) {
                 console.warn(HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT);
                 return element;
             }
@@ -87,7 +87,7 @@ export function HotkeysTarget<T extends IConstructor<IHotkeysTargetComponent>>(W
                 if (this.localHotkeysEvents.count() > 0) {
                     const tabIndex = hotkeys.props.tabIndex === undefined ? 0 : hotkeys.props.tabIndex;
 
-                    const { keyDown: existingKeyDown, keyUp: existingKeyUp } = element.props;
+                    const { onKeyDown: existingKeyDown, onKeyUp: existingKeyUp } = element.props;
                     const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
                         this.localHotkeysEvents.handleKeyDown(e.nativeEvent as KeyboardEvent);
                         safeInvoke(existingKeyDown, e);

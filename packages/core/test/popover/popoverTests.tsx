@@ -583,7 +583,7 @@ describe("<Popover>", () => {
     });
 
     describe("when composed with <Tooltip>", () => {
-        let root: ReactWrapper<any, any>;
+        let root: ReactWrapper;
         beforeEach(() => {
             root = mount(
                 <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
@@ -716,12 +716,12 @@ describe("<Popover>", () => {
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
         simulateTarget(eventName: string): this;
-        findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
+        findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>>;
         sendEscapeKey(): this;
         then(next: (wrap: IPopoverWrapper) => void, done: MochaDone): this;
     }
 
-    function renderPopover(props: Partial<IPopoverProps> = {}, content?: any) {
+    function renderPopover(props: Partial<IPopoverProps> = {}, content?: React.ReactNode) {
         wrapper = mount(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0}>
                 <button>Target</button>

@@ -101,7 +101,7 @@ describe("<RadioGroup>", () => {
         assert.lengthOf(group.find(Radio), 2);
     });
 
-    function findInput(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
+    function findInput(wrapper: ReactWrapper, props: EnzymePropSelector) {
         return wrapper.find("input").filter(props);
     }
 });

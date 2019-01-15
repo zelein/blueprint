@@ -110,6 +110,7 @@ export class ResizeSensor extends React.PureComponent<IResizeSensorProps> {
             // using findDOMNode for two reasons:
             // 1. cloning to insert a ref is unwieldy and not performant.
             // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
+            // eslint-disable-next-line react/no-find-dom-node
             return findDOMNode(this);
         } catch {
             // swallow error if findDOMNode is run on unmounted component.

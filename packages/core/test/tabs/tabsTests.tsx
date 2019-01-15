@@ -346,7 +346,7 @@ describe("<Tabs>", () => {
 
     function findTabById(wrapper: ReactWrapper<ITabsProps, {}>, id: string) {
         // Need this to get the right overload signature
-        // tslint:disable-next-line:no-object-literal-type-assertion
+        // eslint-disable-next-line typescript/no-object-literal-type-assertion
         return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<{}>);
     }
 
@@ -358,7 +358,7 @@ describe("<Tabs>", () => {
         assert.isTrue(style.transform.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
-    function getTabsContents(tabIds: string[] = TAB_IDS): Array<React.ReactElement<any>> {
+    function getTabsContents(tabIds: string[] = TAB_IDS): Array<React.ReactElement<{}>> {
         return tabIds.map(id => <Tab id={id} key={id} panel={<Panel title={id} />} title={id} />);
     }
 });

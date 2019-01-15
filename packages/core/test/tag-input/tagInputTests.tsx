@@ -490,7 +490,7 @@ describe("<TagInput>", () => {
         });
 
         it("is invoked when input text changes", () => {
-            const changeSpy: any = sinon.spy();
+            const changeSpy = sinon.spy();
             const wrapper = shallow(<TagInput onInputChange={changeSpy} values={VALUES} />);
             wrapper.find("input").simulate("change", { currentTarget: { value: "hello" } });
             assert.isTrue(changeSpy.calledOnce, "onChange called");
@@ -528,7 +528,7 @@ describe("<TagInput>", () => {
         });
     });
 
-    function pressEnterInInput(wrapper: ShallowWrapper<any, any>, value: string) {
+    function pressEnterInInput(wrapper: ShallowWrapper, value: string) {
         wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata(value, Keys.ENTER));
     }
 

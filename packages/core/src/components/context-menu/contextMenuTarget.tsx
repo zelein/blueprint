@@ -17,7 +17,7 @@ import { isDarkTheme } from "../../common/utils/isDarkTheme";
 import * as ContextMenu from "./contextMenu";
 
 export interface IContextMenuTargetComponent extends React.Component {
-    render(): React.ReactElement<any> | null | undefined;
+    render(): JSX.Element | null | undefined;
     renderContextMenu(e: React.MouseEvent<HTMLElement>): JSX.Element | undefined;
     onContextMenuClose?(): void;
 }
@@ -38,11 +38,11 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 return element;
             }
 
-            if (!React.isValidElement<any>(element)) {
+            if (!React.isValidElement<React.HTMLAttributes<HTMLElement>>(element)) {
                 console.warn(CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT);
                 return element;
             }
-            const oldOnContextMenu = element.props.onContextMenu as React.MouseEventHandler<HTMLElement>;
+            const oldOnContextMenu = element.props.onContextMenu;
             const onContextMenu = (e: React.MouseEvent<HTMLElement>) => {
                 // support nested menus (inner menu target would have called preventDefault())
                 if (e.defaultPrevented) {
@@ -52,6 +52,7 @@ export function ContextMenuTarget<T extends IConstructor<IContextMenuTargetCompo
                 if (isFunction(this.renderContextMenu)) {
                     const menu = this.renderContextMenu(e);
                     if (menu != null) {
+                        // eslint-disable-next-line react/no-find-dom-node
                         const darkTheme = isDarkTheme(ReactDOM.findDOMNode(this));
                         e.preventDefault();
                         ContextMenu.show(menu, { left: e.clientX, top: e.clientY }, this.onContextMenuClose, darkTheme);

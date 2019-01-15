@@ -60,7 +60,7 @@ describe("Hotkeys", () => {
         let globalKeyUpSpy: SinonSpy = null;
 
         let attachTo: HTMLElement = null;
-        let comp: ReactWrapper<any, any> = null;
+        let comp: ReactWrapper = null;
 
         interface ITestComponentProps {
             allowInInput?: boolean;
@@ -285,12 +285,12 @@ describe("Hotkeys", () => {
                 // this unit test relies on a custom flag we set on the event object.
                 // the flag exists solely to make this unit test possible.
                 dispatchTestKeyboardEvent(node, eventName, "1");
-                const localEvent = getLocalSpy(eventName).lastCall.args[0] as KeyboardEvent;
-                expect((localEvent as any).isPropagationStopped).to.be.true;
+                const localEvent = getLocalSpy(eventName).lastCall.args[0] as React.KeyboardEvent;
+                expect(localEvent.isPropagationStopped).to.be.true;
 
                 dispatchTestKeyboardEvent(node, eventName, "2");
-                const globalEvent = getGlobalSpy(eventName).lastCall.args[0] as KeyboardEvent;
-                expect((globalEvent as any).isPropagationStopped).to.be.true;
+                const globalEvent = getGlobalSpy(eventName).lastCall.args[0] as React.KeyboardEvent;
+                expect(globalEvent.isPropagationStopped).to.be.true;
             });
 
             describe("if allowInInput={false}", () => {
@@ -370,12 +370,12 @@ describe("Hotkeys", () => {
             parsedKeyCombo: IKeyCombo;
         }
 
-        const makeComboTest = (combo: string, event: KeyboardEvent) => {
+        const makeComboTest = (combo: string, event: Partial<KeyboardEvent>) => {
             return {
                 combo,
-                eventKeyCombo: getKeyCombo(event),
+                eventKeyCombo: getKeyCombo(event as KeyboardEvent),
                 parsedKeyCombo: parseKeyCombo(combo),
-                stringKeyCombo: getKeyComboString(event),
+                stringKeyCombo: getKeyComboString(event as KeyboardEvent),
             };
         };
 
@@ -388,25 +388,26 @@ describe("Hotkeys", () => {
             }
         };
 
+        function forEachLetter(cb: (index: number) => { combo: string, event: Partial<KeyboardEvent> }) {
+            const tests = []
+            for (let i = 0; i < 26; i++) {
+                const x = cb(i);
+                tests.push(makeComboTest(x.combo, x.event));
+            }
+            return tests;
+        }
+
         it("matches lowercase alphabet chars", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
-                    const combo = String.fromCharCode(alpha + i).toLowerCase();
-                    const event: KeyboardEvent = { which: alpha + i } as any;
-                    return makeComboTest(combo, event);
-                }),
+                forEachLetter(i => ({combo: String.fromCharCode(alpha + i).toLowerCase(),  event: { which: alpha + i } }))
             );
         });
 
         it("bare alphabet chars ignore case", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
-                    const combo = String.fromCharCode(alpha + i).toUpperCase();
-                    const event: KeyboardEvent = { which: alpha + i } as any;
-                    return makeComboTest(combo, event);
-                }),
+                forEachLetter(i => ({combo: String.fromCharCode(alpha + i).toUpperCase(),  event: { which: alpha + i } })),
                 false,
             ); // don't compare string combos
         });
@@ -414,41 +415,37 @@ describe("Hotkeys", () => {
         it("matches uppercase alphabet chars using shift", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
-                    const combo = "shift + " + String.fromCharCode(alpha + i).toLowerCase();
-                    const event: KeyboardEvent = { shiftKey: true, which: alpha + i } as any;
-                    return makeComboTest(combo, event);
-                }),
+                forEachLetter(i => ({combo: String.fromCharCode(alpha + i).toLowerCase(),  event: { which: alpha + i, shiftKey :true } }))
             );
         });
 
         it("matches modifiers only", () => {
             const tests = [] as IComboTest[];
             const ignored = 16;
-            tests.push(makeComboTest("shift", { shiftKey: true, which: ignored } as any));
+            tests.push(makeComboTest("shift", { shiftKey: true, which: ignored }));
             tests.push(
-                makeComboTest("ctrl + alt + shift", ({
+                makeComboTest("ctrl + alt + shift", {
                     altKey: true,
                     ctrlKey: true,
                     shiftKey: true,
                     which: ignored,
-                } as any) as KeyboardEvent),
+                }),
             );
             tests.push(
-                makeComboTest("ctrl + meta", ({
+                makeComboTest("ctrl + meta", {
                     ctrlKey: true,
                     metaKey: true,
                     which: ignored,
-                } as any) as KeyboardEvent),
+                }),
             );
             verifyCombos(tests);
         });
 
         it("adds shift to keys that imply it", () => {
             const tests = [] as IComboTest[];
-            tests.push(makeComboTest("!", ({ shiftKey: true, which: 49 } as any) as KeyboardEvent));
-            tests.push(makeComboTest("@", ({ shiftKey: true, which: 50 } as any) as KeyboardEvent));
-            tests.push(makeComboTest("{", ({ shiftKey: true, which: 219 } as any) as KeyboardEvent));
+            tests.push(makeComboTest("!", ({ shiftKey: true, which: 49 })));
+            tests.push(makeComboTest("@", ({ shiftKey: true, which: 50 })));
+            tests.push(makeComboTest("{", ({ shiftKey: true, which: 219 })));
             // don't verify the strings because these will be converted to
             // `shift + 1`, etc.
             verifyCombos(tests, false);

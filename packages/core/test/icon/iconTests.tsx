@@ -34,11 +34,11 @@ describe("<Icon>", () => {
     it("renders icon color", () => assertIconColor(<Icon icon="add" color="red" />, "red"));
 
     it("unknown icon name renders blank icon", () => {
-        assert.lengthOf(shallow(<Icon icon={"unknown" as any} />).find("path"), 0);
+        assert.lengthOf(shallow(<Icon icon={"unknown" as IconName} />).find("path"), 0);
     });
 
     it("prefixed icon renders blank icon", () => {
-        assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as any} />).find("path"), 0);
+        assert.lengthOf(shallow(<Icon icon={Classes.iconClass("airplane") as IconName} />).find("path"), 0);
     });
 
     it("icon element passes through unchanged", () => {

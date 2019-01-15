@@ -141,7 +141,7 @@ export class EditableText extends AbstractPureComponent<IEditableTextProps, IEdi
         },
     };
 
-    public constructor(props?: IEditableTextProps, context?: any) {
+    public constructor(props: IEditableTextProps, context?: unknown) {
         super(props, context);
 
         const value = props.value == null ? props.defaultValue : props.value;

@@ -32,7 +32,7 @@ export interface IInputGroupProps extends IControlledProps, IIntentProps, IProps
     disabled?: boolean;
 
     /** Ref handler that receives HTML `<input>` element backing this component. */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: (ref: HTMLInputElement | null) => void;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the input group,

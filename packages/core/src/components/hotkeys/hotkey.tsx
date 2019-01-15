@@ -65,12 +65,12 @@ export interface IHotkeyProps extends IProps {
     /**
      * `keydown` event handler.
      */
-    onKeyDown?(e: KeyboardEvent): any;
+    onKeyDown?(e: KeyboardEvent): void;
 
     /**
      * `keyup` event handler.
      */
-    onKeyUp?(e: KeyboardEvent): any;
+    onKeyUp?(e: KeyboardEvent): void;
 }
 
 export class Hotkey extends AbstractPureComponent<IHotkeyProps, {}> {

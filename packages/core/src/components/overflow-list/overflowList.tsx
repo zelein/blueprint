@@ -103,7 +103,7 @@ export interface IOverflowListState<T> {
 export class OverflowList<T> extends React.PureComponent<IOverflowListProps<T>, IOverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
-    public static defaultProps: Partial<IOverflowListProps<any>> = {
+    public static defaultProps: Partial<IOverflowListProps<unknown>> = {
         collapseFrom: Boundary.START,
         minVisibleItems: 0,
     };

@@ -102,7 +102,7 @@ export class Tabs extends AbstractPureComponent<ITabsProps, ITabsState> {
         tablist: (tabElement: HTMLDivElement) => (this.tablistElement = tabElement),
     };
 
-    constructor(props?: ITabsProps) {
+    public constructor(props?: ITabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
         this.state = { selectedTabId };
@@ -312,6 +312,6 @@ function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[])
     return codes.indexOf(e.which) >= 0;
 }
 
-function isTabElement(child: any): child is TabElement {
+function isTabElement(child: unknown): child is TabElement {
     return Utils.isElementOfType(child, Tab);
 }

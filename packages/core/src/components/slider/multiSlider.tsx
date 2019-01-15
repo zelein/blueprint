@@ -331,8 +331,7 @@ export class MultiSlider extends AbstractPureComponent<IMultiSliderProps, ISlide
         return argMin(handles, handle => {
             const offset = getOffset(handle);
             const offsetValue = handle.clientToValue(offset);
-            const handleValue = handle.props.value!;
-            return Math.abs(offsetValue - handleValue);
+            return Math.abs(offsetValue - handle.props.value);
         });
     }
 

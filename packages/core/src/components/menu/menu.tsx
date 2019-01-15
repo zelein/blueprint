@@ -17,7 +17,7 @@ export interface IMenuProps extends IProps, React.HTMLAttributes<HTMLUListElemen
     large?: boolean;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: (ref: HTMLUListElement | null) => any;
+    ulRef?: (ref: HTMLUListElement | null) => void;
 }
 
 export class Menu extends React.Component<IMenuProps, {}> {

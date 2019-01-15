@@ -33,7 +33,7 @@ export interface IButtonProps extends IActionProps {
     alignText?: Alignment;
 
     /** A ref handler that receives the native HTML element backing this component. */
-    elementRef?: (ref: HTMLElement | null) => any;
+    elementRef?: (ref: HTMLElement | null) => void;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -69,7 +69,7 @@ export interface IButtonState {
     isActive: boolean;
 }
 
-export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extends React.PureComponent<
+export abstract class AbstractButton<H extends React.HTMLAttributes<{}>> extends React.PureComponent<
     IButtonProps & H,
     IButtonState
 > {
@@ -124,7 +124,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
     // that "Type argument candidate 'KeyboardEvent<T>' is not a valid type
     // argument because it is not a supertype of candidate
     // 'KeyboardEvent<HTMLElement>'."
-    protected handleKeyDown = (e: React.KeyboardEvent<any>) => {
+    protected handleKeyDown = (e: React.KeyboardEvent) => {
         if (Keys.isKeyboardClick(e.which)) {
             e.preventDefault();
             if (e.which !== this.currentKeyDown) {
@@ -135,7 +135,7 @@ export abstract class AbstractButton<H extends React.HTMLAttributes<any>> extend
         safeInvoke(this.props.onKeyDown, e);
     };
 
-    protected handleKeyUp = (e: React.KeyboardEvent<any>) => {
+    protected handleKeyUp = (e: React.KeyboardEvent) => {
         if (Keys.isKeyboardClick(e.which)) {
             this.setState({ isActive: false });
             this.buttonRef.click();

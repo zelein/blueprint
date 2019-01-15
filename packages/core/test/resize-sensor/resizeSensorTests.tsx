@@ -13,7 +13,7 @@ import { IResizeSensorProps, ResizeSensor } from "../../src/components/resize-se
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()
-    let wrapper: ReactWrapper<IResizeTesterProps, any> | undefined;
+    let wrapper: ReactWrapper<IResizeTesterProps> | undefined;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
 

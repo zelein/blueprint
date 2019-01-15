@@ -147,7 +147,7 @@ describe("MenuItem", () => {
     });
 });
 
-function findSubmenu(wrapper: ShallowWrapper<any, any>) {
+function findSubmenu(wrapper: ShallowWrapper) {
     return wrapper.find(Popover).prop("content") as React.ReactElement<
         IMenuProps & { children: Array<React.ReactElement<IMenuItemProps>> }
     >;

@@ -90,7 +90,7 @@ export interface IOverlayableProps extends IOverlayLifecycleProps {
      * mouse or key event). Note that, since this component is controlled by the `isOpen` prop, it
      * will not actually close itself until that prop becomes `false`.
      */
-    onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
+    onClose?: (event?: React.SyntheticEvent<HTMLElement> | MouseEvent) => void;
 }
 
 export interface IOverlayLifecycleProps {
@@ -184,10 +184,11 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
     // an HTMLElement that contains the backdrop and any children, to query for focus target
     public containerElement: HTMLElement;
     private refHandlers = {
+        // eslint-disable-next-line react/no-find-dom-node
         container: (ref: React.ReactInstance) => (this.containerElement = findDOMNode(ref) as HTMLElement),
     };
 
-    public constructor(props?: IOverlayProps, context?: any) {
+    public constructor(props: IOverlayProps, context?: unknown) {
         super(props, context);
         this.state = { hasEverOpened: props.isOpen };
     }
@@ -415,7 +416,7 @@ export class Overlay extends React.PureComponent<IOverlayProps, IOverlayState> {
 
         if (isOpen && canOutsideClickClose && !isClickInThisOverlayOrDescendant) {
             // casting to any because this is a native event
-            safeInvoke(onClose, e as any);
+            safeInvoke(onClose, e);
         }
     };
 

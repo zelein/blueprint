@@ -17,7 +17,7 @@ describe("Buttons:", () => {
     buttonTestSuite(AnchorButton, "a");
 });
 
-function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) {
+function buttonTestSuite(component: React.ComponentClass<IButtonProps & React.HTMLAttributes<{}>>, tagName: string) {
     describe(`<${component.displayName.split(".")[1]}>`, () => {
         it("renders its contents", () => {
             const wrapper = button({ className: "foo" });
@@ -78,11 +78,11 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         });
 
         it("pressing enter triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.ENTER);
+            checkKeyDownCallbackInvoked(Keys.ENTER);
         });
 
         it("pressing space triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", Keys.SPACE);
+            checkKeyDownCallbackInvoked(Keys.SPACE);
         });
 
         it("calls onClick when enter key released", done => {
@@ -93,7 +93,7 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             checkClickTriggeredOnKeyUp(done, {}, { which: Keys.SPACE });
         });
 
-        function button(props: IButtonProps, useMount = false, ...children: React.ReactNode[]) {
+        function button(props: IButtonProps & React.HTMLAttributes<{}>, useMount = false, ...children: React.ReactNode[]) {
             const element = React.createElement(component, props, ...children);
             return useMount ? mount(element) : shallow(element);
         }
@@ -101,14 +101,13 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
         function checkClickTriggeredOnKeyUp(
             done: MochaDone,
             buttonProps: Partial<IButtonProps>,
-            keyEventProps: Partial<React.KeyboardEvent<any>>,
+            keyEventProps: Partial<React.KeyboardEvent>,
         ) {
             const wrapper = button(buttonProps, true);
 
             // mock the DOM click() function, because enzyme only handles
             // simulated React events
-            const buttonRef = (wrapper.instance() as any).buttonRef;
-            const onClick = spy(buttonRef, "click");
+            const onClick = spy(wrapper.find("button").getDOMNode() as HTMLButtonElement, "click");
 
             wrapper.simulate("keyup", keyEventProps);
 
@@ -119,15 +118,15 @@ function buttonTestSuite(component: React.ComponentClass<any>, tagName: string) 
             }, 0);
         }
 
-        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, keyCode: number) {
+        function checkKeyDownCallbackInvoked(keyCode: number) {
             const callback = spy();
 
             // IButtonProps doesn't include onKeyDown or onKeyUp in its
             // definition, even though Buttons support those props. Casting as
             // `any` gets around that for the purpose of these tests.
-            const wrapper = button({ [callbackPropName]: callback } as any);
+            const wrapper = button({ onKeyDown: callback });
             const eventProps = { keyCode, shiftKey: true, metaKey: true };
-            wrapper.simulate(eventName, eventProps);
+            wrapper.simulate("keydown", eventProps);
 
             // check that the callback was invoked with modifier key flags included
             assert.equal(callback.callCount, 1);

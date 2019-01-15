@@ -7,6 +7,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
+import { DISPLAYNAME_PREFIX } from '../../common/props';
 
 export interface IElementRefProps<E extends HTMLElement> {
     /** Ref handler to access the instance of the internal HTML element. */
@@ -16,15 +17,16 @@ export interface IElementRefProps<E extends HTMLElement> {
 function htmlElement<E extends HTMLElement>(
     tagName: keyof JSX.IntrinsicElements,
     tagClassName: string,
-): React.SFC<React.HTMLProps<E> & IElementRefProps<E>> {
-    return props => {
-        const { className, elementRef, ...htmlProps } = props;
-        return React.createElement(tagName, {
+) {
+    const cmp: React.SFC<React.HTMLProps<E> & IElementRefProps<E>> = ({ className, elementRef, ...htmlProps }) => (
+        React.createElement(tagName, {
             ...htmlProps,
             className: classNames(tagClassName, className),
             ref: elementRef,
-        });
-    };
+        })
+    );
+    cmp.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
+    return cmp;
 }
 
 // the following components are linted by blueprint-html-components because

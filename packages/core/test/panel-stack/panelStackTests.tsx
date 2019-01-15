@@ -144,8 +144,8 @@ describe("<PanelStack>", () => {
         assert.equal(backButtonWithTitle.text(), "chevron-left");
     });
 
-    interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
-        findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
+    interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps> {
+        findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>>;
     }
 
     function renderPanelStack(props: IPanelStackProps): IPanelStackWrapper {

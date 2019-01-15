@@ -28,9 +28,9 @@ export interface IHotkeysDialogProps extends IDialogProps {
 const DELAY_IN_MS = 10;
 
 class HotkeysDialog {
-    public componentProps = ({
+    public componentProps: Partial<IHotkeysDialogProps> = {
         globalHotkeysGroup: "Global hotkeys",
-    } as any) as IHotkeysDialogProps;
+    }
 
     private container: HTMLElement;
     private hotkeysQueue = [] as IHotkeyProps[][];
@@ -138,11 +138,9 @@ export function isHotkeysDialogShowing() {
 }
 
 export function setHotkeysDialogProps(props: Partial<IHotkeysDialogProps>) {
-    for (const key in props) {
-        if (props.hasOwnProperty(key)) {
-            (HOTKEYS_DIALOG.componentProps as any)[key] = (props as any)[key];
-        }
-    }
+    Object.keys(props).map((key: keyof IHotkeysDialogProps) => {
+        HOTKEYS_DIALOG.componentProps[key] = props[key];
+    });
 }
 
 export function showHotkeysDialog(hotkeys: IHotkeyProps[]) {
@@ -156,7 +154,7 @@ export function hideHotkeysDialog() {
 /**
  * Use this function instead of `hideHotkeysDialog` if you need to ensure that all hotkey listeners
  * have time to execute with the dialog in a consistent open state. This can avoid flickering the
- * dialog between open and closed states as successive listeners fire.
+ * dialog between open and closed states as successive listeners fire.
  */
 export function hideHotkeysDialogAfterDelay() {
     HOTKEYS_DIALOG.hideAfterDelay();

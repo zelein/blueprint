@@ -206,7 +206,7 @@ describe("<MultiSlider>", () => {
 
     describe("validation", () => {
         it("throws an error if a child is not a slider handle", () => {
-            expectPropValidationError(MultiSlider, { children: <span>Bad</span> as any });
+            expectPropValidationError(MultiSlider, { children: <span>Bad</span> });
         });
 
         it("throws error if stepSize <= 0", () => {

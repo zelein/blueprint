@@ -25,7 +25,7 @@ The `wrapper` variable below and the `mountWrapper` method should be used for fu
 For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
 */
 describe("<Overlay>", () => {
-    let wrapper: ReactWrapper<IOverlayProps, any>;
+    let wrapper: ReactWrapper<IOverlayProps>;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
 
@@ -376,6 +376,7 @@ describe("<Overlay>", () => {
     describe("Background scrolling", () => {
         beforeEach(() => {
             // force-reset Overlay stack state between tests
+            // eslint-disable-next-line typescript/no-explicit-any
             (Overlay as any).openStack = [];
             document.body.classList.remove(Classes.OVERLAY_OPEN);
         });

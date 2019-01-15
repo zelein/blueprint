@@ -79,6 +79,6 @@ describe("<FileInput>", () => {
     });
 });
 
-function getInput(wrapper: ShallowWrapper<any, any> | ReactWrapper<any, any>) {
+function getInput(wrapper: ShallowWrapper | ReactWrapper) {
     return wrapper.find("input");
 }

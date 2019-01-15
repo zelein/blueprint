@@ -70,7 +70,7 @@ export interface INumericInputProps extends IIntentProps, IProps {
     /**
      * Ref handler that receives HTML `<input>` element backing this component.
      */
-    inputRef?: (ref: HTMLInputElement | null) => any;
+    inputRef?: (ref: HTMLInputElement | null) => void;
 
     /**
      * If set to `true`, the input will display with larger styling.

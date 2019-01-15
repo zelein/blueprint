@@ -140,9 +140,10 @@ describe("Utils", () => {
     });
 
     describe("throttleReactEventCallback", () => {
+        /* eslint-disable typescript/no-explicit-any */
         let callback: SinonSpy;
         let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
-        let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
+        let throttledCallback: (event2: React.SyntheticEvent, ...otherArgs2: any[]) => void;
 
         beforeEach(() => {
             callback = spy();
@@ -168,5 +169,6 @@ describe("Utils", () => {
 
         // TODO: how to test this properly? perhaps with the help of https://github.com/alexreardon/raf-stub?
         it.skip("properly throttles callback using requestAnimationFrame");
+        /* eslint-enable typescript/no-explicit-any */
     });
 });

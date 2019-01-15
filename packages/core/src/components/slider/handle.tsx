@@ -36,7 +36,7 @@ export interface IHandleState {
 }
 
 // props that require number values, for validation
-const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
+const NUMBER_PROPS: Array<keyof IInternalHandleProps> = ["max", "min", "stepSize", "tickSize", "value"];
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
 export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleState> {
@@ -137,7 +137,7 @@ export class Handle extends AbstractPureComponent<IInternalHandleProps, IHandleS
 
     protected validateProps(props: IInternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
-            if (typeof (props as any)[prop] !== "number") {
+            if (typeof props[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);
             }
         }

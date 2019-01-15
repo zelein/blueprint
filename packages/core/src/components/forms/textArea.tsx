@@ -28,7 +28,7 @@ export interface ITextAreaProps extends IIntentProps, IProps, React.TextareaHTML
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
-    inputRef?: (ref: HTMLTextAreaElement | null) => any;
+    inputRef?: (ref: HTMLTextAreaElement | null) => void;
 }
 
 // this component is simple enough that tests would be purely tautological.

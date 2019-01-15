@@ -75,7 +75,7 @@ describe("<Alert>", () => {
     describe("confirm button", () => {
         const onConfirm = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
+        let wrapper: ShallowWrapper<IAlertProps>;
 
         beforeEach(() => {
             onConfirm.resetHistory();
@@ -116,8 +116,8 @@ describe("<Alert>", () => {
     describe("cancel button", () => {
         const onCancel = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<IAlertProps>;
+        let cancelButton: ShallowWrapper<IButtonProps>;
 
         beforeEach(() => {
             onCancel.resetHistory();
