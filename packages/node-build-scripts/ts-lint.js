@@ -22,3 +22,5 @@ if (process.env.JUNIT_REPORT_PATH != null) {
 }
 
 spawn(`eslint`, args, { stdio: "inherit" })
+    // expose status so lint failures will fail the build.
+    .on("close", code => process.exitCode = code)
