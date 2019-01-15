@@ -17,7 +17,7 @@ export interface IKeyBlacklist<T> {
  * default, or they will be compared using the custom `compare` function if one
  * is provided.
  */
-export function arraysEqual(arrA: any[], arrB: any[], compare = (a: any, b: any) => a === b) {
+export function arraysEqual<T = unknown>(arrA: T[], arrB: T[], compare = (a: T, b: T) => a === b) {
     // treat `null` and `undefined` as the same
     if (arrA == null && arrB == null) {
         return true;
@@ -56,7 +56,7 @@ export function shallowCompareKeys<T extends object>(objA: T, objB: T, keys?: IK
  * Deep comparison between objects. If `keys` is provided, just that subset of
  * keys will be compared; otherwise, all keys will be compared.
  */
-export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean {
+export function deepCompareKeys<T>(objA: T, objB: T, keys?: Array<keyof T>): boolean {
     if (objA === objB) {
         return true;
     } else if (objA == null && objB == null) {
@@ -64,7 +64,7 @@ export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean 
         return true;
     } else if (objA == null || objB == null) {
         return false;
-    } else if (Array.isArray(objA) || Array.isArray(objB)) {
+    } else if (Array.isArray(objA) && Array.isArray(objB)) {
         return arraysEqual(objA, objB, deepCompareKeys);
     } else if (_isSimplePrimitiveType(objA) || _isSimplePrimitiveType(objB)) {
         return objA === objB;
@@ -73,8 +73,8 @@ export function deepCompareKeys(objA: any, objB: any, keys?: string[]): boolean 
     } else if (objA.constructor !== objB.constructor) {
         return false;
     } else {
-        const keysA = Object.keys(objA);
-        const keysB = Object.keys(objB);
+        const keysA = Object.keys(objA) as Array<keyof T>;
+        const keysB = Object.keys(objB) as Array<keyof T>;
         if (keysA == null || keysB == null) {
             return false;
         }
@@ -109,11 +109,7 @@ export function getShallowUnequalKeyValues<T extends object>(
  * Returns a descriptive object for each key whose values are deeply unequal
  * between two provided objects. Useful for debugging shouldComponentUpdate.
  */
-export function getDeepUnequalKeyValues<T extends object>(
-    objA: T = ({} as any) as T,
-    objB: T = ({} as any) as T,
-    keys?: Array<keyof T>,
-) {
+export function getDeepUnequalKeyValues<T extends object>(objA: T, objB: T, keys?: Array<keyof T>) {
     const filteredKeys = keys == null ? _unionKeys(objA, objB) : keys;
     return _getUnequalKeyValues(objA, objB, filteredKeys, (a, b, key) => {
         return deepCompareKeys(a, b, [key]);
@@ -126,7 +122,7 @@ export function getDeepUnequalKeyValues<T extends object>(
 /**
  * Partial shallow comparison between objects using the given list of keys.
  */
-function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
+function _shallowCompareKeys<T extends object>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyWhitelist<T>) {
     return _filterKeys(objA, objB, keys).every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && objA[key] === objB[key];
     });
@@ -135,13 +131,13 @@ function _shallowCompareKeys<T>(objA: T, objB: T, keys: IKeyBlacklist<T> | IKeyW
 /**
  * Partial deep comparison between objects using the given list of keys.
  */
-function _deepCompareKeys(objA: any, objB: any, keys: string[]): boolean {
+function _deepCompareKeys<T>(objA: T, objB: T, keys: Array<keyof T>): boolean {
     return keys.every(key => {
         return objA.hasOwnProperty(key) === objB.hasOwnProperty(key) && deepCompareKeys(objA[key], objB[key]);
     });
 }
 
-function _isSimplePrimitiveType(value: any) {
+function _isSimplePrimitiveType(value: unknown): value is number | string | boolean {
     return typeof value === "number" || typeof value === "string" || typeof value === "boolean";
 }
 
