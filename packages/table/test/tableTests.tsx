@@ -128,7 +128,7 @@ describe("<Table>", function(this) {
             </Table>,
         );
 
-        // the callback is called quite often even in the course of a single render cycle.
+        // the callback is called quite often even in the course of a single render cycle.
         // don't bother to count the invocations.
         expect(onVisibleCellsChange.called).to.be.true;
         const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
@@ -387,6 +387,7 @@ describe("<Table>", function(this) {
 
             function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
                 // cast as `any` to access private members
+                // eslint-disable-next-line typescript/no-explicit-any
                 const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
                 tableInstance.scrollToRegion(region);
                 // just check that the scroll event would be triggered with the proper args; don't
@@ -527,7 +528,8 @@ describe("<Table>", function(this) {
             );
         }
 
-        function selectFullTable(table: ReactWrapper<any, {}>, ...mouseEventArgs: any[]) {
+        // eslint-disable-next-line typescript/no-explicit-any
+        function selectFullTable(table: ReactWrapper, ...mouseEventArgs: any[]) {
             const menu = table.find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_MENU}`);
             menu.simulate("mousedown", ...mouseEventArgs).simulate("mouseup", ...mouseEventArgs);
         }
@@ -1069,7 +1071,7 @@ describe("<Table>", function(this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: IFocusedCellCoordinates = { row: 1, col: 1 } as any;
+        const DEFAULT_FOCUSED_CELL_COORDS: IFocusedCellCoordinates = { row: 1, col: 1, focusSelectionIndex: 0 };
 
         // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1386,6 +1388,7 @@ describe("<Table>", function(this) {
             // get native DOM nodes
             const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            // eslint-disable-next-line react/no-find-dom-node
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
             // trigger a drag-selection starting at the center of the activation cell
@@ -1422,7 +1425,7 @@ describe("<Table>", function(this) {
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
             // need to explicitly `.fill` a new array with empty values for mapping to work
-            const defineColumn = (_unused: any, i: number) => <Column key={i} cellRenderer={renderDummyCell} />;
+            const defineColumn = (_a: unknown, i: number) => <Column key={i} cellRenderer={renderDummyCell} />;
             const columns = Array(NUM_COLS)
                 .fill(undefined)
                 .map(defineColumn);
@@ -1544,12 +1547,12 @@ describe("<Table>", function(this) {
                 .map(renderColumn);
         }
 
-        function renderColumn(_unused: any, i: number) {
+        function renderColumn(_unused: unknown, i: number) {
             return <Column key={i} cellRenderer={renderDummyCell} />;
         }
 
         function scrollTable(
-            table: ReactWrapper<any, {}>,
+            table: ReactWrapper,
             scrollLeft: number,
             scrollTop: number,
             callback: () => void,
@@ -1611,7 +1614,7 @@ describe("<Table>", function(this) {
                     expectPropValidationError(
                         Table,
                         {
-                            children: <span>I'm a span, not a column</span>,
+                            children: <span>I am a span, not a column</span>,
                         },
                         Errors.TABLE_NON_COLUMN_CHILDREN_WARNING,
                     );
@@ -1800,7 +1803,7 @@ describe("<Table>", function(this) {
             );
         }
 
-        function click(component: ReactWrapper<any, any>) {
+        function click(component: ReactWrapper) {
             component.simulate("mousedown").simulate("mouseup");
         }
 
@@ -1904,12 +1907,13 @@ describe("<Table>", function(this) {
     }
 
     function updateLocatorElements(
-        table: ReactWrapper<any, {}>,
+        table: ReactWrapper,
         scrollLeft: number,
         scrollTop: number,
         clientWidth: number,
         clientHeight: number,
     ) {
+        // eslint-disable-next-line typescript/no-explicit-any
         const locator = (table.instance() as any).locator;
         const baseStyles = { clientHeight, clientWidth };
 
@@ -1936,7 +1940,7 @@ describe("<Table>", function(this) {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper, key: string, keyCode: number, shiftKey = false) {
         const eventConfig = {
             key,
             keyCode,

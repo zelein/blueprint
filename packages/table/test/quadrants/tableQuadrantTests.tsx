@@ -123,6 +123,7 @@ describe("TableQuadrant", () => {
             runTest(undefined, []);
         });
 
+        // eslint-disable-next-line typescript/no-explicit-any
         function runTest(quadrantType: QuadrantType, expectedArgs: any[]) {
             mountTableQuadrant({ quadrantType });
             expect(bodyRenderer.calledOnce).to.be.true;
@@ -239,7 +240,7 @@ describe("TableQuadrant", () => {
         }
     });
 
-    function getDomNode(component: ReactWrapper<any, any>) {
+    function getDomNode(component: ReactWrapper) {
         return component.getDOMNode() as HTMLElement;
     }
 

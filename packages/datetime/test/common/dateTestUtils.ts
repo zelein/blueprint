@@ -29,7 +29,7 @@ export function createTimeObject(hour: number, minute: number = 0, second: numbe
     return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
 }
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean =>
+const isDayHidden = (day: ReactWrapper): boolean =>
     day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
 
 export function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
@@ -47,10 +47,10 @@ export function assertDatesEqual(a: Date, b: Date) {
     assert.isTrue(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear());
 }
 
-export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
+export function assertDayDisabled(day: ReactWrapper, expectDisabled: boolean = true) {
     assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
 }
 
-export function assertDayHidden(day: ReactWrapper<any, any>, expectHidden: boolean = true) {
+export function assertDayHidden(day: ReactWrapper, expectHidden: boolean = true) {
     assert.equal(isDayHidden(day), expectHidden);
 }

@@ -118,7 +118,7 @@ describe("TableBody", () => {
         });
 
         describe("on right-click", () => {
-            const simulateAction = (tableBody: ReactWrapper<any, any>) => {
+            const simulateAction = (tableBody: ReactWrapper) => {
                 tableBody.simulate("contextmenu");
             };
             runTestSuite(simulateAction);
@@ -127,13 +127,13 @@ describe("TableBody", () => {
         // triggering onContextMenu via ctrl+click doesn't work in HeadlessChrome
         describe.skip("on ctrl+click", () => {
             // ctrl+click should also triggers the context menu and should behave in the exact same way
-            const simulateAction = (tableBody: ReactWrapper<any, any>) => {
+            const simulateAction = (tableBody: ReactWrapper) => {
                 tableBody.simulate("mousedown", { ctrlKey: true });
             };
             runTestSuite(simulateAction);
         });
 
-        function runTestSuite(simulateAction: (tableBody: ReactWrapper<any, any>) => void) {
+        function runTestSuite(simulateAction: (tableBody: ReactWrapper) => void) {
             it("selects a right-clicked cell if there is no active selection", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
@@ -187,6 +187,7 @@ describe("TableBody", () => {
                 bodyContextMenuRenderer,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
+                    // eslint-disable-next-line typescript/no-explicit-any
                 } as any,
                 onFocusedCell,
                 onSelection,

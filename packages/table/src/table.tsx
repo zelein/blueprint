@@ -189,6 +189,7 @@ export interface ITableProps extends IProps, IRowHeights, IColumnWidths {
      * The data will be invisibly added as `textContent` into the DOM before
      * copying. If not defined, keyboard copying via `mod+c` will be disabled.
      */
+    // eslint-disable-next-line typescript/no-explicit-any
     getCellClipboardData?: (row: number, col: number) => any;
 
     /**
@@ -464,7 +465,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
         "viewportRect",
     ] as Array<keyof ITableState>;
 
-    private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
+    private static createColumnIdIndex(children: JSX.Element[]) {
         const columnIdToIndex: { [key: string]: number } = {};
         for (let i = 0; i < children.length; i++) {
             const key = children[i].props.id;
@@ -486,7 +487,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     private refHandlers = {
         cellContainer: (ref: HTMLElement) => (this.cellContainerElement = ref),
         columnHeader: (ref: HTMLElement) => (this.columnHeaderElement = ref),
-        mainQuadrant: (ref: HTMLElement) => (this.mainQuadrantElement = ref),
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
         rootTable: (ref: HTMLElement) => (this.rootTableElement = ref),
         rowHeader: (ref: HTMLElement) => (this.rowHeaderElement = ref),
@@ -495,7 +495,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
 
     private cellContainerElement: HTMLElement;
     private columnHeaderElement: HTMLElement;
-    private mainQuadrantElement: HTMLElement;
     private quadrantStackInstance: TableQuadrantStack;
     private rootTableElement: HTMLElement;
     private rowHeaderElement: HTMLElement;
@@ -510,7 +509,7 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
     // time. it serves as a signal that we can switch to batch rendering.
     private didCompletelyMount = false;
 
-    public constructor(props: ITableProps, context?: any) {
+    public constructor(props: ITableProps, context?: unknown) {
         super(props, context);
 
         const { children, columnWidths, defaultRowHeight, defaultColumnWidth, numRows, rowHeights } = this.props;
@@ -843,7 +842,6 @@ export class Table extends AbstractComponent<ITableProps, ITableState> {
                     numFrozenRows={numFrozenRowsClamped}
                     numRows={numRows}
                     onScroll={this.handleBodyScroll}
-                    quadrantRef={this.refHandlers.mainQuadrant}
                     ref={this.refHandlers.quadrantStack}
                     menuRenderer={this.renderMenu}
                     rowHeaderCellRenderer={this.renderRowHeader}

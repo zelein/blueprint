@@ -28,9 +28,9 @@ import { Classes as DateClasses, DateRange, DateRangeInput, DateRangePicker } fr
 import { DATE_FORMAT } from "./common/dateFormat";
 import * as DateTestUtils from "./common/dateTestUtils";
 
-type WrappedComponentRoot = ReactWrapper<any, {}>;
-type WrappedComponentInput = ReactWrapper<HTMLInputProps, any>;
-type WrappedComponentDayElement = ReactWrapper<HTMLDivProps, any>;
+type WrappedComponentRoot = ReactWrapper;
+type WrappedComponentInput = ReactWrapper<HTMLInputProps>;
+type WrappedComponentDayElement = ReactWrapper<HTMLDivProps>;
 
 type OutOfRangeTestFunction = (
     inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
@@ -140,7 +140,7 @@ describe("<DateRangeInput>", () => {
 
         function runTestSuite(
             inputGetterFn: (root: WrappedComponentRoot) => WrappedComponentInput,
-            mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => any,
+            mountFn: (inputGroupProps: HTMLInputProps & IInputGroupProps) => ReactWrapper,
         ) {
             it("allows custom placeholder text", () => {
                 const root = mountFn({ placeholder: "Hello" });

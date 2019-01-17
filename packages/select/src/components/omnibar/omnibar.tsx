@@ -58,10 +58,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
     }
 
     private TypedQueryList = QueryList.ofType<T>();
-    private queryList?: QueryList<T> | null;
-    private refHandlers = {
-        queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
-    };
 
     public render() {
         // omit props specific to this component, spread the rest.
@@ -72,7 +68,6 @@ export class Omnibar<T> extends React.PureComponent<IOmnibarProps<T>> {
                 {...restProps}
                 initialContent={initialContent}
                 onItemSelect={this.props.onItemSelect}
-                ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
             />
         );

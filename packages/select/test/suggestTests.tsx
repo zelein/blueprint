@@ -88,7 +88,7 @@ describe("Suggest", () => {
             assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
         });
 
-        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
+        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper, which: number) {
             simulateKeyDown(wrapper, which);
             assert.isFalse(wrapper.state().isOpen, "should not open popover");
         }
@@ -293,7 +293,7 @@ function filterByYear(query: string, film: IFilm) {
     return query === "" || film.year.toString() === query;
 }
 
-function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
+function selectItem(wrapper: ReactWrapper, index: number) {
     wrapper
         .find("a")
         .at(index)
@@ -304,18 +304,18 @@ function inputValueRenderer(item: IFilm) {
     return item.title;
 }
 
-function simulateChange(wrapper: ReactWrapper<any, any>, value: string) {
+function simulateChange(wrapper: ReactWrapper, value: string) {
     wrapper.find("input").simulate("change", { target: { value } });
 }
 
-function simulateFocus(wrapper: ReactWrapper<any, any>) {
+function simulateFocus(wrapper: ReactWrapper) {
     wrapper.find("input").simulate("focus");
 }
 
-function simulateKeyDown(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
+function simulateKeyDown(wrapper: ReactWrapper, which = Keys.SPACE) {
     wrapper.find("input").simulate("keydown", { which });
 }
 
-function simulateKeyUp(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
+function simulateKeyUp(wrapper: ReactWrapper, which = Keys.SPACE) {
     wrapper.find("input").simulate("keyup", { which });
 }
